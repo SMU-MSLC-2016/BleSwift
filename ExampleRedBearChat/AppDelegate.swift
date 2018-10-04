@@ -6,16 +6,45 @@
 //  Copyright © 2017 Eric Larson. All rights reserved.
 //
 
+let kBLEConnect = "bleDidConnect"
+let kBLEDisconnect = "bleDidDisconnect"
+let kBLERecieve = "bleDidReceiveData"
+
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, BLEDelegate {
+    func bleDidUpdateState() {
+        
+    }
+    
+    func bleDidConnectToPeripheral() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue:kBLEConnect),
+                                        object:self)
+    }
+    
+    func bleDidDisconnectFromPeripheral() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue:kBLEDisconnect),
+                                        object:self)
+    }
+    
+    func bleDidReceiveData(data: Data?) {
+        if let dataSafe = data {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue:kBLERecieve),
+                                        object:self,
+                                        userInfo:["data":dataSafe])
+        }
+    }
+    
 
     var window: UIWindow?
+    
+    var bleShield = BLE()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        bleShield.delegate = self
         return true
     }
 

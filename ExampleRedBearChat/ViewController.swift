@@ -103,7 +103,8 @@ class ViewController: UIViewController, BLEDelegate {
         
         if(bleShield.peripherals.count > 0) {
             // connect to the first found peripheral
-            bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
+            let peripheral = bleShield.peripherals[0]
+            bleShield.connectToPeripheral(peripheral: peripheral)
         }
         else {
             self.spinner.stopAnimating()
